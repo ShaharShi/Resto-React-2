@@ -5,7 +5,7 @@ import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 
 export default function OrdersPage() {
-  const [state, setState] = useContext(MealsContext);
+  const [state, dispatch] = useContext(MealsContext);
   const { orders } = state;
   function getTotalCal() {
     const total = orders.reduce((total: number, order: any) => {
@@ -17,10 +17,11 @@ export default function OrdersPage() {
   }
 
   function removeMeal(meal: IMeal) {
-    const ordersWithoutDeleteMeal = orders.filter(
-      (order: IMeal) => order.name !== meal.name
-    );
-    setState({ ...state, orders: ordersWithoutDeleteMeal });
+    dispatch({type: 'REMOVE_MEAL', payload: meal})
+    
+  }
+  function clearOrders() {
+    dispatch({type: 'CLEAR_ORDERS', payload: []})
   }
   return (
     <div>
@@ -35,9 +36,7 @@ export default function OrdersPage() {
         <div className="col-lg-3 float-right pull-right">
           <Button
             className={"pull-right"}
-            onClick={() => {
-              setState({ ...state, orders: [] });
-            }}
+            onClick={clearOrders}
             variant="danger"
             size="lg"
             active
@@ -50,6 +49,7 @@ export default function OrdersPage() {
         {orders.map((meal: any) => {
           return (
             <Meal
+              key={meal.name}
               {...meal}
               cls="danger"
               actionTitle="Remove"

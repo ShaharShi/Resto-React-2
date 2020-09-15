@@ -1,5 +1,4 @@
 import React, { useState, useReducer } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import NavBarApp from "./components/ui-components/header/";
 import AppRouter from "./components/containers/appRouter";
@@ -33,9 +32,12 @@ function mealsReducer(state: any, action: IProps) {
   }
   if (action.type === "REMOVE_MEAL") {
     const { payload } = action;
-    // find index blabla // delete
-    const newOrders = [...state.orders];
-    return { ...state, orders: [...newOrders] };
+    const mealsWithoutDeletedMealArr = state.orders.filter((order: any) => { return order.name !== payload.name})
+    return { ...state, orders: [...mealsWithoutDeletedMealArr] };
+  }
+  if (action.type === "CLEAR_ORDERS") {
+    const { payload } = action;
+    return { ...state, orders: payload };
   }
 
   return state;
@@ -43,8 +45,6 @@ function mealsReducer(state: any, action: IProps) {
 
 function App() {
   const [state, dispatch] = useReducer(mealsReducer, initialState);
-
-  //   const [globalState, setGlobalState] = useState(initialState);
   const initialConfigurationState = { starsColor: "red" };
   const [getConfig, setConfig] = useState(initialConfigurationState);
 

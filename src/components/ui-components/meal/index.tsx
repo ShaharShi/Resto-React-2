@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { MealsContext } from "App";
 import Rating from "components/ui-components/rating";
 
 export interface IMeal {
@@ -18,8 +17,7 @@ export default function Meal(props: IMeal) {
 
   function onAction() {
     const { name, image, description, rating } = props;
-    action({ name, image, description, rating }); // action can be( addMeal, removeMeal, editMeal etc..)
-    // action(props);
+    action({ name, image, description, rating });
   }
   return (
     <Card className="col-lg-4">
