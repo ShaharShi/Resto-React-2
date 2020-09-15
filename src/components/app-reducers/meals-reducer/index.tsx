@@ -27,4 +27,4 @@ export default function mealsReducer(state: any, action: IProps) {
     }
   
     return state;
-  }
+}
