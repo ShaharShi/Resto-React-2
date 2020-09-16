@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import "./App.css";
 import NavBarApp from "./components/ui-components/header/";
 import AppRouter from "./components/containers/appRouter";
@@ -23,11 +23,11 @@ export const ConfigurationContext: any = React.createContext(null);
 function App() {
   const [mealsState, mealsDispatch] = useReducer(mealsReducer, initialState);
   const [configState, configDispatch] = useReducer(configurationReducer, configInitialState)
-
+  
   return (
     <Router>
       <ConfigurationContext.Provider value={[configState, configDispatch]}>
-        <MealsContext.Provider value={[mealsState, mealsDispatch]}>
+        <MealsContext.Provider value={[mealsState, mealsDispatch]} >
           <div className="container">
             <NavBarApp />
             <AppRouter />
