@@ -2,29 +2,46 @@ import React, { useContext, useEffect } from "react";
 import { MealsContext } from "App";
 import axios from "axios";
 import Meal, { IMeal } from "components/ui-components/meal";
+import FilterUI from "components/ui-components/Filter-ui";
 
 export default function HomePage() {
-  const [state, setState] = useContext(MealsContext);
+  const [mealsState, mealsDispatch] = useContext(MealsContext);
+  const [filterState ,filterDispatch] = useContext(MealsContext)
 
   async function getRecipesApi() {
     try {
       const result = await axios.get("http://localhost:5200/meals");
-      setState({ ...state, meals: [...state?.meals, ...result.data] });
-    } catch (ex) {}
+      mealsDispatch({ type: "GET_MEALS_FROM_SERVER_DONE", payload: result.data });
+    } catch (ex) {
+      console.log(ex)
+    }
   }
-  //action(props)
+
   function addMeal(meal: IMeal) {
-    setState({ ...state, orders: [...state.orders, meal] });
+    mealsDispatch({ type: "ADD_MEAL", payload: meal });
+  }
+  function searchMeal({value, by}: any) {
+    filterDispatch({ type: by, payload: value})
   }
   useEffect(() => {
     getRecipesApi();
   }, []);
-  if (!state.meals) return <span> No Meals </span>;
+  if (!mealsState.meals) return <span> No Meals </span>;
   return (
-    <div className="row">
-      {state?.meals.map((meal: any) => {
-        return <Meal actionTitle="Order Now" {...meal} action={addMeal} />;
-      })}
+    <div className={'container'}>
+      <FilterUI action={searchMeal}/>
+      <div className="row">
+        {mealsState?.meals.map((meal: any) => {
+          return (
+            <Meal
+              key={meal.name}
+              actionTitle="Order Now"
+              {...meal}
+              action={addMeal}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }

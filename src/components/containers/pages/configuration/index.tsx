@@ -3,10 +3,10 @@ import Button from "react-bootstrap/Button";
 import { ConfigurationContext } from "App";
 
 export default function ConfigurationPage() {
-  const [getConfig, setConfig] = useContext(ConfigurationContext);
+  const [configState, configDispatch] = useContext(ConfigurationContext);
 
   function onColorChange(color: string): void {
-    setConfig({ ...getConfig, starsColor: color });
+    configDispatch({type: 'CHANGE_STAR_COLOR', payload : color });
   }
 
   const configButtonsColor = [
